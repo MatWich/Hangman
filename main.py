@@ -30,7 +30,7 @@ def draw():
         x, y, s = letter
         pygame.draw.circle(screen, (0, 0, 0), (x, y), config.RADIUS, 3)
         l = config.LETTERS_FONT.render(s, 1, (0, 0, 0))
-        screen.blit(l, (x - 5, y- 8))
+        screen.blit(l, (x - l.get_width()/2, y - l.get_height() / 2))
     screen.blit(images[0], (0, 0))
     pygame.display.update()
 
