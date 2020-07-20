@@ -1,6 +1,7 @@
 import pygame
 import config
 import math
+import secrets
 pygame.init()
 
 # SCREEN
@@ -11,6 +12,13 @@ pygame.display.set_caption("HANGMAN GAME")
 images = [pygame.image.load("imgs/hangman" + str(x) + ".png") for x in range(0, 5)]
 print(images)
 
+# GAME VARIABLES
+hangmanStatus = 4
+words = ["hangman", "Invaders", "Python"]
+choice = secrets.choice(words)
+index = words.index(choice)
+word = words[index]
+print(word)
 
 # SETTING LETTERS POS
 letters = []    # X, Y
@@ -20,17 +28,18 @@ A = 65
 for i in range(26):
     X = firstX + config.GAP * 2 + ((config.RADIUS * 2 + config.GAP) * (i % 13))
     Y = firtsY + ((i  // 13) * (config.GAP + config.RADIUS * 2))
-    letters.append([X, Y, chr(A + i)])
+    letters.append([X, Y, chr(A + i), True])
 print(len(letters))
 
 def draw():
     screen.fill((255, 255, 255))
     # LETTERS
     for letter in letters:
-        x, y, s = letter
-        pygame.draw.circle(screen, (0, 0, 0), (x, y), config.RADIUS, 3)
-        l = config.LETTERS_FONT.render(s, 1, (0, 0, 0))
-        screen.blit(l, (x - l.get_width()/2, y - l.get_height() / 2))
+        x, y, s, visible = letter
+        if visible == True:
+            pygame.draw.circle(screen, (0, 0, 0), (x, y), config.RADIUS, 3)
+            l = config.LETTERS_FONT.render(s, 1, (0, 0, 0))
+            screen.blit(l, (x - l.get_width()/2, y - l.get_height() / 2))
     screen.blit(images[0], (0, 0))
     pygame.display.update()
 
@@ -45,10 +54,10 @@ while run:
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouse_x, mouse_y = pygame.mouse.get_pos()
             for letter in letters:
-                x, y, l = letter
-                dis = math.sqrt((x - mouse_x) ** 2 + (y - mouse_y) ** 2)
-                if dis < config.RADIUS:
-                    print(l)
-
+                x, y, l, visible = letter
+                if visible == True:
+                    dis = math.sqrt((x - mouse_x) ** 2 + (y - mouse_y) ** 2)
+                    if dis < config.RADIUS:
+                        letter[3] = False
     draw()
 
