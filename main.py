@@ -52,7 +52,7 @@ def draw():
             pygame.draw.circle(screen, (0, 0, 0), (x, y), config.RADIUS, 3)
             l = config.LETTERS_FONT.render(s, 1, (0, 0, 0))
             screen.blit(l, (x - l.get_width()/2, y - l.get_height() / 2))
-    screen.blit(images[0], (0, 0))
+    screen.blit(images[hangmanStatus], (0, 0))
     pygame.display.update()
 
 clock = pygame.time.Clock()
@@ -72,6 +72,20 @@ while run:
                     if dis < config.RADIUS:
                         letter[3] = False
                         guessed.append(l)
+                        if l not in word:
+                            hangmanStatus -= 1
+    won = True
+    for letter in word:
+        if letter not in guessed:
+            won = False
+            break
+    if won == True:
+        print("You win")
+        break
+
+    if hangmanStatus == -1:
+        print("you lost")
+        break
 
     draw()
 
