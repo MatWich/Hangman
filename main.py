@@ -43,8 +43,12 @@ while run:
         if event.type == pygame.QUIT:
             run = False
         if event.type == pygame.MOUSEBUTTONDOWN:
-            pos = pygame.mouse.get_pos()
-            print(pos)
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+            for letter in letters:
+                x, y, l = letter
+                dis = math.sqrt((x - mouse_x) ** 2 + (y - mouse_y) ** 2)
+                if dis < config.RADIUS:
+                    print(l)
 
     draw()
 
