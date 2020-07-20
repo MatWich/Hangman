@@ -14,11 +14,13 @@ print(images)
 
 # GAME VARIABLES
 hangmanStatus = 4
-words = ["hangman", "Invaders", "Python"]
+words = ["HANGMAN", "INVADERS", "PYTHON", "PYGAME", "PYQT5"]
 choice = secrets.choice(words)
 index = words.index(choice)
 word = words[index]
 print(word)
+
+guessed = []
 
 # SETTING LETTERS POS
 letters = []    # X, Y
@@ -33,6 +35,16 @@ print(len(letters))
 
 def draw():
     screen.fill((255, 255, 255))
+    # DRAW WORD
+    displayWord = ""
+    for letter in word:
+        if letter in guessed:
+            displayWord += letter + " "
+        else:
+            displayWord += "_ "
+    DisplayedWord = config.LETTERS_FONT.render(displayWord, 1, (0, 0, 0))
+    screen.blit(DisplayedWord, (400, 200))
+
     # LETTERS
     for letter in letters:
         x, y, s, visible = letter
@@ -59,5 +71,7 @@ while run:
                     dis = math.sqrt((x - mouse_x) ** 2 + (y - mouse_y) ** 2)
                     if dis < config.RADIUS:
                         letter[3] = False
+                        guessed.append(l)
+
     draw()
 
