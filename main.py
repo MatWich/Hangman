@@ -14,6 +14,7 @@ print(images)
 
 # GAME VARIABLES
 hangmanStatus = 4
+lives = hangmanStatus + 1
 words = ["HANGMAN", "INVADERS", "PYTHON", "PYGAME", "PYQT5"]
 choice = secrets.choice(words)
 index = words.index(choice)
@@ -34,6 +35,7 @@ for i in range(26):
 print(len(letters))
 
 def draw():
+    global lives
     screen.fill((255, 255, 255))
     # DRAW WORD
     displayWord = ""
@@ -52,6 +54,11 @@ def draw():
             pygame.draw.circle(screen, (0, 0, 0), (x, y), config.RADIUS, 3)
             l = config.LETTERS_FONT.render(s, 1, (0, 0, 0))
             screen.blit(l, (x - l.get_width()/2, y - l.get_height() / 2))
+    # LIVES
+    livesLeft = "Lives: " + str(lives)
+    text = config.LETTERS_FONT.render(livesLeft, 1, (255, 0, 100))
+    screen.blit(text, (config.WIDTH - text.get_width() - 10, 10))
+
     screen.blit(images[hangmanStatus], (0, 0))
     pygame.display.update()
 
@@ -74,6 +81,7 @@ while run:
                         guessed.append(l)
                         if l not in word:
                             hangmanStatus -= 1
+                            lives -= 1
     won = True
     for letter in word:
         if letter not in guessed:
