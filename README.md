@@ -1,0 +1,4 @@
+# Hangman 
+
+# REQUIREMENTS
+Python & Pygame
